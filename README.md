@@ -4,7 +4,7 @@ Bu proje Web Teknolojileri ve Programlama dersi Sprint 1 görevi için hazırlan
 HTML5 anlamsal (semantic) etiketleri kullanılarak 5 sayfalık bir iskelet oluşturulmuştur. CSS ve JavaScript kullanılmamıştır.
 
 ## Canlı Yayın (Vercel) Adresi
-Projenin canlı çalışan hali: [BURAYA_VERCEL_LINKINI_YAPISTIR]
+Projenin canlı çalışan hali: https://kampus-etkinlik-6ree.vercel.app/
 
 ## Kullanılan Teknolojiler
 * HTML5
