@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Etkinlik Güncelle</title>
+</head>
+<body>
+    <header>
+        <h1>Etkinlik Güncelle</h1>
+        <nav>
+            <a href="index.html">Ana Sayfa</a>
+            <a href="etkinlikler.html">Etkinlikler</a>
+            <a href="etkinlik-detay.html">Detay</a>
+            <a href="etkinlik-ekle.html">Ekle</a>
+            <a href="etkinlik-guncelle.html">Güncelle</a>
+        </nav>
+    </header>
+    <main>
+        <form action="#" method="GET">
+            <label for="ad">Etkinlik Adı:</label><br>
+            <input type="text" id="ad" name="ad" value="Kariyer Günleri 2026" required><br><br>
+
+            <label for="kategori">Kategori:</label><br>
+            <select id="kategori" name="kategori" required>
+                <option value="seminer" selected>Seminer</option>
+                <option value="atolye">Atölye</option>
+            </select><br><br>
+
+            <label for="tarih">Tarih / Saat:</label><br>
+            <input type="datetime-local" id="tarih" name="tarih" value="2026-10-12T14:00" required><br><br>
+
+            <label for="aciklama">Açıklama:</label><br>
+            <textarea id="aciklama" name="aciklama" rows="4" required>Ayrıntılı açıklama metni buradadır.</textarea><br><br>
+
+            <button type="submit">Güncelle</button>
+        </form>
+    </main>
+    <footer>
+        <p>Emirhan Berberoğlu -2416501013 - 2026</p>
+    </footer>
+</body>
+</html>
