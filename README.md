@@ -26,7 +26,4 @@ Projenin en güncel çalışan hali: [https://kampus-etkinlik-6ree.vercel.app/](
 * Öğrenci numarasına (2416501013) dayalı özel CSS değişkenleriyle özgün renk ve font (Trebuchet MS, Hue 293) atamaları yapıldı.
 * Eski tablo yapıları modern kartlara çevrildi, form elemanlarına hata (validation) stilleri eklendi.
 
-### ⏳ Sprint 3: JavaScript ve DOM Manipülasyonu (Planlanıyor)
-* Etkinlik kartlarının JavaScript dizilerinden okunarak ekrana dinamik basılması.
-* Arama ve kategoriye göre filtreleme özelliklerinin eklenmesi.
-* Form sayfalarında anlık JavaScript doğrulama (validation) işlemlerinin yapılması.
+
