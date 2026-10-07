@@ -2,28 +2,37 @@
 
 Bu proje, Web Teknolojileri ve Programlama dersi kapsamında adım adım (çevik/agile sprint mantığıyla) geliştirilen bir etkinlik yönetim platformudur.
 
-## 🌐 Canlı Yayın (Vercel) Adresi
+🌐 **Canlı Yayın (Vercel) Adresi**
+
 Projenin en güncel çalışan hali: [https://kampus-etkinlik-6ree.vercel.app/](https://kampus-etkinlik-6ree.vercel.app/)
 
-## 🛠️ Kullanılan Teknolojiler
+🛠️ **Kullanılan Teknolojiler**
+
 * **HTML5** (Semantik Etiketler)
 * **CSS3** (Grid, Mobile-First, Custom Variables)
+* **JavaScript (ES6 Modülleri)** (Dinamik İçerik, Form Validasyonu, URL Parametre Yönetimi)
 * **Git & GitHub** (Versiyon Kontrolü)
 * **Vercel** (Canlı Yayın / Deployment)
 
----
+🚀 **Geliştirme Süreci (Sprint Günlüğü)**
 
-## 🚀 Geliştirme Süreci (Sprint Günlüğü)
+✅ **Sprint 1: İskelet Kurulumu (Tamamlandı)**
 
-### ✅ Sprint 1: İskelet Kurulumu (Tamamlandı)
 * HTML5 anlamsal (semantic) etiketleri kullanılarak projenin temel iskeleti oluşturuldu.
 * Toplam 5 sayfalık (Ana Sayfa, Etkinlikler, Detay, Ekle, Güncelle) yapı kuruldu.
 * Hiçbir stil veya script dosyası kullanılmadan saf HTML ile veri hiyerarşisi sağlandı.
 
-### ✅ Sprint 2: Tasarım ve Düzen (Tamamlandı)
+✅ **Sprint 2: Tasarım ve Düzen (Tamamlandı)**
+
 * Mobil öncelikli (mobile-first) CSS tasarımı entegre edildi.
 * Sayfa yerleşimleri (özellikle etkinlik kartları ve detay sayfası) için **CSS Grid** (Izgara) yapısı kullanıldı.
 * Öğrenci numarasına (2416501013) dayalı özel CSS değişkenleriyle özgün renk ve font (Trebuchet MS, Hue 293) atamaları yapıldı.
 * Eski tablo yapıları modern kartlara çevrildi, form elemanlarına hata (validation) stilleri eklendi.
 
+✅ **Sprint 3: Etkileşim ve Dinamik İşlevsellik (Tamamlandı)**
 
+* JavaScript kullanılarak etkinlik listeleme, filtreleme ve detay sayfaları tamamen dinamik bir yapıya kavuşturuldu.
+* URL parametreleri (`?id=event-x`) ile sayfalar arası dinamik veri geçişi ve yönlendirmeler sağlandı.
+* Formlar için anlık (inline) doğrulama (validation) mekanizması entegre edilerek, hatalı alanlar için dinamik uyarı mesajları ve hata stilleri uygulandı.
+* Başarılı form gönderimlerinde veriler, otomatik üretilen benzersiz ID ile birlikte yeşil çerçeveli kutu içerisinde JSON formatında ekrana yansıtıldı.
+* Güncelleme sayfası akıllı yönlendirme mantığıyla geliştirildi; ID ile erişildiğinde form ilgili etkinliğin bilgileriyle otomatik doldurulurken, ID'siz erişimde özel uyarı ve yönlendirme butonu gösterildi.
