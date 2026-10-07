@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etkinlikler</title>
+    <link rel="stylesheet" href="css/2416501013.css">
+    <script type="module" src="js/event-list.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Kampüs Etkinlikleri</h1>
+    </header>
+    <nav>
+        <a href="index.html">Ana Sayfa</a>
+        <a href="etkinlikler.html">Etkinlikler</a>
+        <a href="etkinlik-ekle.html">Ekle</a>
+    </nav>
+    <main>
+    <div class="filtre-alani">
+    <input type="text" id="arama-kutusu" placeholder="Etkinlik ara...">
+    <select id="kategori-secimi">
+        <option value="">Tüm Kategoriler</option>
+        <option value="Seminer">Seminer</option>
+        <option value="Atölye">Atölye</option>
+        <option value="Söyleşi">Söyleşi</option>
+    </select>
+    <p id="sonuc-metni"></p>
+</div>
+    <section id="etkinlik-listesi" class="etkinlik-listesi"></section>
+    </main>
+    <footer>
+        <p>Emirhan Berberoğlu -2416501013 - 2026</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etkinlik Ekle</title>
+    <link rel="stylesheet" href="css/2416501013.css">
+    <script type="module" src="js/event-form.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Etkinlik Ekle</h1>
+        <nav>
+            <a href="index.html">Ana Sayfa</a>
+            <a href="etkinlikler.html">Etkinlikler</a>
+            <a href="etkinlik-ekle.html">Ekle</a>
+        </nav>
+    </header>
+    <main>
+     <div id="form-hatalari"></div>
+
+<p style="font-size: 0.9em; color: #555;">Yıldızlı (*) alanlar zorunludur. Bu sprintte form veri kaydetmez; sonuç aşağıda gösterilir.</p>
+
+<form id="etkinlik-formu">
+    <label for="title">Etkinlik Adı *</label><br>
+    <input type="text" id="title" name="title">
+    <div id="error-title" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+    <label for="category">Kategori *</label><br>
+    <select id="category" name="category">
+        <option value="">Seçiniz</option>
+        <option value="Seminer">Seminer</option>
+        <option value="Atölye">Atölye</option>
+        <option value="Söyleşi">Söyleşi</option>
+    </select>
+    <div id="error-category" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+    <label for="date">Tarih *</label><br>
+    <input type="date" id="date" name="date">
+    <div id="error-date" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+    <label for="time">Saat *</label><br>
+    <input type="time" id="time" name="time">
+    <div id="error-time" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+    <label for="location">Yer *</label><br>
+    <input type="text" id="location" name="location" placeholder="Örn. A Blok Konferans Salonu">
+    <div id="error-location" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+    <label for="capacity">Kontenjan</label><br>
+    <input type="number" id="capacity" name="capacity">
+    <div id="error-capacity" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+    <button type="submit">Ekle</button>
+</form>
+
+<div id="form-basari-mesaji"></div>
+    </main>
+    <footer>
+        <p>Emirhan Berberoğlu - 2416501013 - 2026</p>
+    </footer>
+</body>
+</html>

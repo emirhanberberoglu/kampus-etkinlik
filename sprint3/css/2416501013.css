@@ -1,0 +1,198 @@
+/* Emirhan Berberoğlu 2416501013 */
+:root {
+    --no: 2416501013;
+    --ton: 293;
+    --renk-ana: hsl(var(--ton) 65% 38%);
+    --renk-zemin: hsl(var(--ton) 30% 97%);
+    --font: "Trebuchet MS", sans-serif;
+    --bosluk-m: 1rem;
+    --kose: 8px;
+}
+
+body { 
+    font-family: var(--font);
+    background-color: var(--renk-zemin);
+    margin: 0;
+    padding: var(--bosluk-m);
+}
+/* Kart Izgarası (Mobil Öncelikli - Tek Sütun) */
+.etkinlik-listesi {
+    display: grid;
+    grid-template-columns: 1fr; /* Telefonda yan yana taşmayı önler */
+    gap: var(--bosluk-m);
+    margin-top: var(--bosluk-m);
+}
+
+/* Etkinlik Kartı Tasarımı */
+.etkinlik-kart {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: var(--kose);
+    padding: var(--bosluk-m);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.etkinlik-kart h2 {
+    color: var(--renk-ana);
+    margin-top: 0;
+    font-size: 1.25rem;
+}
+
+.etkinlik-kart a {
+    color: var(--renk-ana);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.etkinlik-kart a:hover {
+    text-decoration: underline;
+}
+
+/* Geniş Ekran (Masaüstü - 3 Sütun) */
+@media (min-width: 768px) {
+    .etkinlik-listesi {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+/* Etkinlik Detay Sayfası (Mobil Öncelikli: Alt alta) */
+.detay-izgara {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    background-color: white;
+    padding: var(--bosluk-m);
+    border-radius: var(--kose);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Afişin taşmasını engellemek için */
+.detay-izgara img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--kose);
+}
+/* Geniş Ekran (Masaüstü: Afiş solda, künye sağda) */
+@media (min-width: 768px) {
+    .detay-izgara {
+        grid-template-columns: 300px 1fr;
+        /* Şablonu belirliyoruz: Başlık üstte tam genişlik, afiş solda, künye ve link sağda */
+        grid-template-areas: 
+            "baslik baslik"
+            "afis kunye"
+            "afis link";
+        align-items: start;
+        gap: 2rem;
+    }
+    
+    /* HTML elemanlarını şablondaki yerlerine atıyoruz */
+    .detay-izgara h2 { grid-area: baslik; }
+    .detay-izgara figure { grid-area: afis; margin: 0; }
+    .detay-izgara dl { grid-area: kunye; margin-top: 0; }
+    .detay-izgara > a { grid-area: link; }
+}
+/* Form Tasarımı (Label üstte, hatalı alan kırmızı) */
+form {
+    background-color: white;
+    padding: var(--bosluk-m);
+    border-radius: var(--kose);
+    max-width: 500px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Her form elemanının altından boşluk bırakıyoruz */
+form div {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block; /* Yazıyı kutunun tam üstüne alır */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--renk-ana);
+}
+
+input, select, textarea {
+    width: 100%; /* Kutuyu formun genişliğine tam yayar, taşmayı önler */
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* Boş bırakılan zorunlu (required) alanlar kırmızı olur */
+input:invalid, select:invalid, textarea:invalid {
+    border-color: red;
+    background-color: #fff0f0;
+}
+
+button {
+    background-color: var(--renk-ana);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--kose);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+/* Künye Bilgileri (Yan yana tablo görünümü) */
+/* Künye Bilgileri (Yan yana tablo ve Kutu görünümü) */
+.detay-izgara dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem 1.5rem;
+    margin-top: 0;
+    
+    /* Kutu görünümü için eklenen kısım */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: var(--kose);
+    padding: var(--bosluk-m);
+}
+
+.detay-izgara dt {
+    font-weight: bold; /* Başlıklar kalın (Tarih, Yer vb.) */
+}
+
+.detay-izgara dd {
+    margin-left: 0; /* Tarayıcının varsayılan boşluğunu sıfırlıyoruz */
+}
+/* Üst Bilgi ve Menü (Slayttaki Renkli Tepe Bloğu) */
+header {
+    background-color: var(--renk-ana);
+    color: white;
+    padding: 1rem 1rem 0.1rem 1rem;
+    border-radius: var(--kose) var(--kose) 0 0; /* Sadece üst köşeleri yuvarlatır */
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    background-color: var(--renk-ana);
+    padding: 0.5rem 1rem 1rem 1rem;
+    margin-bottom: var(--bosluk-m);
+    border-radius: 0 0 var(--kose) var(--kose); /* Sadece alt köşeleri yuvarlatır */
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Form etiketlerini siyah ve belirgin yapıyoruz */
+label {
+    color: #333 !important; /* Önceki rengi ezer */
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etkinlik Güncelle</title>
+    <link rel="stylesheet" href="css/2416501013.css">
+    <script type="module" src="js/event-form.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Etkinlik Güncelle</h1>
+        <nav>
+            <a href="index.html">Ana Sayfa</a>
+            <a href="etkinlikler.html">Etkinlikler</a>
+            <a href="etkinlik-ekle.html">Ekle</a>
+        </nav>
+    </header>
+    <main>
+<div id="hata-durumu" style="display: none; background: #ffebee; color: #d32f2f; padding: 20px; text-align: center; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+    Güncellenecek etkinlik seçilmedi! Lütfen detay sayfasından "Bu Etkinliği Güncelle" butonuna tıklayarak gelin.
+</div>
+
+<div id="form-alani">
+    <form id="etkinlik-formu">
+        <label for="title">Etkinlik Adı:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <div id="error-title" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+        <label for="category">Kategori:</label><br>
+        <select id="category" name="category">
+            <option value="Seminer">Seminer</option>
+            <option value="Atölye">Atölye</option>
+            <option value="Söyleşi">Söyleşi</option>
+        </select><br>
+        <div id="error-category" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+        <label for="date">Tarih:</label><br>
+        <input type="date" id="date" name="date"><br>
+        <div id="error-date" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+        <label for="time">Saat:</label><br>
+        <input type="time" id="time" name="time"><br>
+        <div id="error-time" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+        <label for="location">Yer:</label><br>
+        <input type="text" id="location" name="location"><br>
+        <div id="error-location" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+        <label for="capacity">Kontenjan:</label><br>
+        <input type="number" id="capacity" name="capacity"><br>
+        <div id="error-capacity" style="color:red; font-size: 0.85em; margin-bottom: 15px; margin-top: 5px;"></div>
+
+        <label for="description">Açıklama:</label><br>
+        <textarea id="description" name="description" rows="4"></textarea><br><br>
+
+        <button type="submit">Güncelle</button>
+    </form>
+    
+    <!-- Başarı mesajı buraya gelecek -->
+    <div id="form-basari-mesaji"></div>
+</div>
+    </main>
+    <footer>
+        <p>Emirhan Berberoğlu -2416501013 - 2026</p>
+    </footer>
+</body>
+</html>
