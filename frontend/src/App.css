@@ -54,43 +54,67 @@ body {
         grid-template-columns: repeat(3, 1fr);
     }
 }
-/* Etkinlik Detay Sayfası (Mobil Öncelikli: Alt alta) */
+/* Etkinlik Detay Sayfası (Mobil Öncelikli: Alt alta)
+   Sprint 4: sınıf adı React'teki "detay-izgara" ile eşlendi, beyaz dış kart kaldırıldı */
 .detay-izgara {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    background-color: white;
-    padding: var(--bosluk-m);
-    border-radius: var(--kose);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 /* Afişin taşmasını engellemek için */
+.detay-izgara figure {
+    margin: 0;
+}
+
 .detay-izgara img {
+    display: block;
     max-width: 100%;
     height: auto;
     border-radius: var(--kose);
 }
+
+.detay-izgara figcaption {
+    font-style: italic;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+}
+
 /* Geniş Ekran (Masaüstü: Afiş solda, künye sağda) */
 @media (min-width: 768px) {
     .detay-izgara {
         grid-template-columns: 300px 1fr;
-        /* Şablonu belirliyoruz: Başlık üstte tam genişlik, afiş solda, künye ve link sağda */
-        grid-template-areas: 
-            "baslik baslik"
-            "afis kunye"
-            "afis link";
         align-items: start;
         gap: 2rem;
     }
-    
-    /* HTML elemanlarını şablondaki yerlerine atıyoruz */
-    .detay-izgara h2 { grid-area: baslik; }
-    .detay-izgara figure { grid-area: afis; margin: 0; }
-    .detay-izgara dl { grid-area: kunye; margin-top: 0; }
-    .detay-izgara > a { grid-area: link; }
+
+    /* Afişi olmayan etkinlikte boş sütun kalmasın */
+    .detay-izgara.afissiz {
+        grid-template-columns: 1fr;
+    }
 }
+
+/* Künye Bilgileri (Yan yana tablo ve Kutu görünümü) */
+.detay-izgara dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem 1.5rem;
+    margin-top: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: var(--kose);
+    padding: var(--bosluk-m);
+}
+
+.detay-izgara dt {
+    font-weight: bold; /* Başlıklar kalın (Tarih, Yer vb.) */
+}
+
+.detay-izgara dd {
+    margin-left: 0; /* Tarayıcının varsayılan boşluğunu sıfırlıyoruz */
+}
+
 /* Form Tasarımı (Label üstte, hatalı alan kırmızı) */
 form {
     background-color: white;
@@ -140,28 +164,6 @@ button {
 button:hover {
     opacity: 0.9;
 }
-/* Künye Bilgileri (Yan yana tablo görünümü) */
-/* Künye Bilgileri (Yan yana tablo ve Kutu görünümü) */
-.detay-izgara dl {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.8rem 1.5rem;
-    margin-top: 0;
-    
-    /* Kutu görünümü için eklenen kısım */
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: var(--kose);
-    padding: var(--bosluk-m);
-}
-
-.detay-izgara dt {
-    font-weight: bold; /* Başlıklar kalın (Tarih, Yer vb.) */
-}
-
-.detay-izgara dd {
-    margin-left: 0; /* Tarayıcının varsayılan boşluğunu sıfırlıyoruz */
-}
 /* Üst Bilgi ve Menü (Slayttaki Renkli Tepe Bloğu) */
 header {
     background-color: var(--renk-ana);
@@ -195,4 +197,128 @@ nav a:hover {
 /* Form etiketlerini siyah ve belirgin yapıyoruz */
 label {
     color: #333 !important; /* Önceki rengi ezer */
+}
+
+/* ============================================================
+   SPRINT 4 EKLERİ (React sürümü için)
+   ============================================================ */
+
+/* İçerik çok geniş ekranda aşırı yayılmasın */
+body {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* Başlık bloğundaki alt yazı */
+.site-baslik p {
+    margin: 0.5rem 0 0.9rem 0;
+    font-size: 0.9rem;
+}
+
+/* Menü: aktif sayfa beyaz kutuda (aria-current) */
+nav a {
+    display: inline-block;
+    padding: 0.35rem 0.7rem;
+    margin-right: 0.25rem;
+    border-radius: 6px;
+}
+
+nav a[aria-current="page"] {
+    background-color: white;
+    color: var(--renk-ana);
+}
+
+nav a[aria-current="page"]:hover {
+    text-decoration: none;
+}
+
+/* Kart: üstte renkli çizgi, kategori etiketi */
+.etkinlik-kart {
+    border-top: 4px solid var(--renk-ana);
+}
+
+.etkinlik-kart p {
+    margin: 0.4rem 0;
+}
+
+.etiket {
+    display: inline-block;
+    background-color: var(--renk-zemin);
+    color: var(--renk-ana);
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.4rem;
+}
+
+.tumunu-gor {
+    margin-top: var(--bosluk-m);
+}
+
+/* Arama + kategori kutusu: telefonda alt alta, geniş ekranda yan yana */
+.filtre-alani {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--bosluk-m);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: var(--kose);
+    padding: var(--bosluk-m);
+}
+
+@media (min-width: 768px) {
+    .filtre-alani {
+        grid-template-columns: 1fr 240px;
+    }
+}
+
+.sonuc {
+    margin: var(--bosluk-m) 0 0 0;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--renk-ana);
+}
+
+/* Detay: açıklama ve butonlar */
+.detay-aciklama h2 {
+    margin-bottom: 0.5rem;
+}
+
+.detay-butonlar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: var(--bosluk-m);
+}
+
+/* Etkinlik bulunamadı kutusu */
+.hata-mesaji {
+    background-color: #fff0f0;
+    border: 1px solid #c0392b;
+    color: #a02020;
+    border-radius: var(--kose);
+    padding: var(--bosluk-m);
+    margin-bottom: var(--bosluk-m);
+}
+
+.hata-mesaji h2 {
+    margin-top: 0;
+    font-size: 1.1rem;
+}
+
+/* Form açıklama notu */
+.form-not {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Alt bilgi */
+footer {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #555;
+    border-top: 1px solid #ddd;
+    margin-top: 2rem;
+    padding-top: 1rem;
 }
