@@ -145,9 +145,9 @@ input, select, textarea {
     font-family: inherit;
 }
 
-/* Boş bırakılan zorunlu (required) alanlar kırmızı olur */
-input:invalid, select:invalid, textarea:invalid {
-    border-color: red;
+/* Doğrulamadan geçemeyen alanlar kırmızı olur (Sprint 6: aria-invalid ile) */
+input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] {
+    border-color: #c0392b;
     background-color: #fff0f0;
 }
 
@@ -321,4 +321,146 @@ footer {
     border-top: 1px solid #ddd;
     margin-top: 2rem;
     padding-top: 1rem;
+}
+
+
+/* ============================================================
+   VİZE EKLERİ (Router + Context + doğrulama)
+   ============================================================ */
+
+/* Bağlantı olan butonlar (<Link className="buton">) düğmeyle aynı görünür */
+.buton {
+    display: inline-block;
+    background-color: var(--renk-ana);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--kose);
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.buton:hover {
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.buton-sil {
+    background-color: #b3261e;
+}
+
+:focus-visible {
+    outline: 3px solid hsl(var(--ton) 80% 60%);
+    outline-offset: 2px;
+}
+
+.bolum-baslik {
+    margin: 0 0 var(--bosluk-m) 0;
+}
+
+/* Form alanı + hata metni */
+.alan {
+    margin-bottom: 1rem;
+}
+
+.hata-metni {
+    display: block;
+    color: #b3261e;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+}
+
+/* Başarı bildirimi (kayıt eklendi, form geçerli vb.) */
+.mesaj {
+    border-radius: var(--kose);
+    padding: 0.75rem var(--bosluk-m);
+    max-width: 500px;
+    box-sizing: border-box;
+}
+
+.mesaj-basari {
+    background-color: #eaf6ec;
+    border: 1px solid #2e7d32;
+    color: #1b5e20;
+}
+
+/* Giriş / kayıt / şifremi unuttum alt bağlantıları */
+.form-baglantilar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: var(--bosluk-m);
+}
+
+.form-baglantilar a {
+    color: var(--renk-ana);
+    font-weight: bold;
+}
+
+/* Yönetim tablosu: geniş ekranda tablo, telefonda her satır bir kart */
+.tablo {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: var(--kose);
+    overflow: hidden;
+}
+
+.tablo th,
+.tablo td {
+    text-align: left;
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.tablo th {
+    background-color: var(--renk-ana);
+    color: white;
+}
+
+.islemler {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.islemler .buton,
+.islemler button {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 767px) {
+    .tablo,
+    .tablo tbody,
+    .tablo tr,
+    .tablo td {
+        display: block;
+    }
+
+    .tablo thead {
+        position: absolute;
+        left: -9999px; /* ekran okuyucu için kalsın, gözle görünmesin */
+    }
+
+    .tablo tr {
+        padding: 0.5rem 0;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .tablo td {
+        border-bottom: none;
+        padding: 0.25rem var(--bosluk-m);
+    }
+
+    .tablo td.islemler {
+        display: flex;
+    }
+
+    .tablo td[data-baslik]::before {
+        content: attr(data-baslik) ": ";
+        font-weight: bold;
+    }
 }
