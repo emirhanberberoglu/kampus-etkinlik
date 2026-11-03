@@ -3,13 +3,14 @@
 Bu proje, Web Teknolojileri ve Programlama dersi kapsamında adım adım (çevik/agile sprint mantığıyla) geliştirilen bir etkinlik yönetim platformudur.
 
 ## 🌐 Canlı Yayın (Vercel) Adresi
-Projenin en güncel çalışan hali: https://kampus-etkinlik-6ree.vercel.app/
+Projenin en güncel çalışan hali: https://emirhanberberoglu-frontend.vercel.app/
 
 ## 🛠️ Kullanılan Teknolojiler
 * **HTML5** (Semantik Etiketler)
 * **CSS3** (Grid, Mobile-First, Custom Variables)
 * **JavaScript** (ES Modules, DOM)
 * **TypeScript, Vite ve React** (Sprint 4+)
+* **React Router ve Context API** (Vize teslimi)
 * **Git & GitHub** (Versiyon Kontrolü)
 * **Vercel** (Canlı Yayın / Deployment)
 
@@ -49,3 +50,13 @@ Projenin en güncel çalışan hali: https://kampus-etkinlik-6ree.vercel.app/
 * Yardımcı dosyalar: `types/page.ts` (tip tanımları), `utils/format-date.ts` (tarih formatı).
 * Satır içi stiller kaldırıldı, tüm stiller `App.css` içinde CSS değişkenleriyle tanımlıdır.
 * **Ekran görünümü Sprint 4 ile birebir aynı kaldı.**
+
+### ✅ Vize Teslimi: Router, Context ve Formlar (Tamamlandı)
+* **React Router ile 10 route** tanımlandı (`App.tsx`): `/`, `/events`, `/events/:id`, `/admin`, `/admin/new`, `/admin/:id/edit`, `/login`, `/register`, `/forgot-password` ve tanımsız adresler için `*`. Menü `NavLink` ile çalışır, aktif sayfa işaretlenir. Sprint 5'teki `page` / `selectedId` state'i ve `types/page.ts` kaldırıldı; sayfa seçimini artık adres çubuğu belirler.
+* **Sayfalar** `src/pages/` klasörüne ayrıldı (10 sayfa bileşeni); `Header`, `Navigation`, `EventCard`, `EventDetail` gibi Sprint 5 bileşenleri korundu, callback'ler yerine `Link` kullanıldı.
+* **Context API + useReducer:** `src/context/` içinde `EventsContext`, `eventsReducer` ve `EventsProvider` bulunur; `main.tsx` tüm uygulamayı Provider ile sarar, sayfalar `useEvents()` hook'u ile listeye ulaşır.
+* **Ekle, güncelle, sil:** Yönetim sayfasındaki tablodan Düzenle / Sil yapılır; silmeden önce onay penceresi çıkar. Yapılan değişiklik Ana Sayfa, Etkinlikler ve Detay sayfalarında hemen görünür.
+* **Form doğrulama:** Etkinlik, giriş, kayıt ve şifremi unuttum formlarında alan altı hata mesajları gösterilir (`utils/validate-event.ts`, `utils/validate-auth.ts`).
+* **Arama ve kategori filtresi** Context'teki güncel liste üzerinden çalışır.
+* **Mobil uyumlu** tasarım; yönetim tablosu telefonda kart görünümüne geçer. `vercel.json` ile tüm adresler sayfa yenilenince de açılır.
+* GitHub'a gönderildi ve Vercel'de yayınlandı: https://emirhanberberoglu-frontend.vercel.app/
