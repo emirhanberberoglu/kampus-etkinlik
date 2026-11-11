@@ -1,17 +1,51 @@
 # Kampüs Etkinlikleri Projesi
 
-Bu proje, Web Teknolojileri ve Programlama dersi kapsamında adım adım (çevik/agile sprint mantığıyla) geliştirilen bir etkinlik yönetim platformudur.
+Bu proje, Web Teknolojileri ve Programlama dersi kapsamında adım adım (çevik/agile sprint mantığıyla) geliştirilen bir etkinlik yönetim platformudur. Öğrenci: **Emirhan Berberoğlu — 2416501013**.
 
 ## 🌐 Canlı Yayın (Vercel) Adresi
-Projenin en güncel çalışan hali: https://kampus-etkinlik-6ree.vercel.app/
+Frontend'in en güncel çalışan hali: https://emirhanberberoglu-frontend.vercel.app/
+
+(Backend bu aşamada yalnızca yerelde çalışır; canlıya alınması sonraki sprintlerde.)
+
+## 📁 Depo Yapısı
+
+```text
+kampus-etkinlik/
+  sprint1/ sprint2/ sprint3/   HTML, CSS ve JavaScript aşamaları
+  frontend/                    React + TypeScript + Vite uygulaması (Sprint 4-6)
+  backend/                     Express REST API (Sprint 7)
+  README.md
+```
 
 ## 🛠️ Kullanılan Teknolojiler
 * **HTML5** (Semantik Etiketler)
 * **CSS3** (Grid, Mobile-First, Custom Variables)
 * **JavaScript** (ES Modules, DOM)
-* **TypeScript, Vite ve React** (Sprint 4+)
+* **TypeScript, Vite ve React** (Sprint 4+), **React Router ve Context API** (Sprint 6)
+* **Node.js ve Express** (Sprint 7: REST API, dotenv, cors)
 * **Git & GitHub** (Versiyon Kontrolü)
 * **Vercel** (Canlı Yayın / Deployment)
+
+## ▶️ Projeyi Çalıştırma
+
+**Frontend** (`http://localhost:5173`):
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+**Backend** (`http://localhost:3000`):
+
+```bash
+cd backend
+cp .env.example .env      # Windows PowerShell: copy .env.example .env
+npm install
+npm run dev
+```
+
+Backend'in çalıştırma komutları, `PORT` değişkeni ve REST sözleşmesi tablosu için `backend/README.md` dosyasına bak.
 
 ---
 
@@ -49,3 +83,21 @@ Projenin en güncel çalışan hali: https://kampus-etkinlik-6ree.vercel.app/
 * Yardımcı dosyalar: `types/page.ts` (tip tanımları), `utils/format-date.ts` (tarih formatı).
 * Satır içi stiller kaldırıldı, tüm stiller `App.css` içinde CSS değişkenleriyle tanımlıdır.
 * **Ekran görünümü Sprint 4 ile birebir aynı kaldı.**
+
+### ✅ Sprint 6 / Vize Teslimi: React Router ve Context (Tamamlandı)
+* **React Router** ile 10 route tanımlandı (ana sayfa, etkinlik listesi, detay, yönetim, ekleme, güncelleme, giriş, kayıt, şifremi unuttum, 404).
+* **Context API** ve `useReducer` ile etkinlik listesi tüm sayfalarda ortak tutulur; ekleme, güncelleme ve silme (onaylı) yönetim sayfasından yapılır.
+* Etkinlik, giriş, kayıt ve şifremi unuttum formlarına doğrulama kuralları eklendi.
+* `vercel.json` rewrite'ı sayesinde adresler Vercel'de sayfa yenilenince de açılır.
+* Ayrıntılar: `frontend/README.md`.
+
+### ✅ Sprint 7: Express ve REST API (Tamamlandı)
+* Bu sprintte **yalnızca `backend/` klasörü eklendi; `frontend/` değişmedi.**
+* Express 5 ile REST API kuruldu: `GET /health`, `GET /events` (isteğe bağlı `?category=`), `GET /events/:id`, `POST /events`.
+* Kod üç katmana ayrıldı: **route** (`routes/event-routes.js`), **controller** (`controllers/event-controller.js`) ve **veri** (`data/events.js`). `app.js` uygulamayı kurar, `server.js` sunucuyu başlatır.
+* Port koda yazılmadı, `.env` dosyasından (`dotenv`) okunur; `.env` ve `node_modules` GitHub'a gönderilmez, örnek değerler `.env.example` içindedir.
+* Tüm hatalar `{ "error": { "message": "..." } }` biçiminde döner (404 ve 400 durumları dahil).
+* `GET /health` yanıtında `student` alanı öğrenci numarasını (2416501013) taşır.
+* Etkinlikler bellekteki dizide tutulur, 6 başlangıç etkinliği vardır; `POST` ile eklenenler sunucu kapanınca silinir (kalıcı veri Sprint 8'de).
+* 6 isteklik Postman collection'ı `backend/requests/kampus-api.json` dosyasındadır.
+* Ayrıntılı çalıştırma komutları ve REST sözleşmesi tablosu: `backend/README.md`.
