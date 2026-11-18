@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Kampüs API",
-    "description": "Kampüs Etkinlikleri REST API - Sprint 7. Önce backend klasöründe `npm run dev` ile sunucuyu başlat, sonra istekleri sırayla gönder.",
+    "description": "Kampüs Etkinlikleri REST API (Sprint 7-8). Önce backend klasöründe `npm run seed`, sonra `npm run dev` çalıştır; istekleri sırayla gönder. 3. istek, 2. istekte listeden alınan _id ile çalışır.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -49,11 +49,17 @@
             "type": "text/javascript",
             "exec": [
               "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
-              "pm.test(\"en az 6 etkinlik donuyor\", () => {",
-              "  const body = pm.response.json();",
-              "  pm.expect(body).to.be.an(\"array\");",
-              "  pm.expect(body.length).to.be.at.least(6);",
-              "});"
+              "const events = pm.response.json();",
+              "pm.test(\"seed sonrasi en az 6 kayit, her birinde _id ve createdAt var\", () => {",
+              "  pm.expect(events).to.be.an(\"array\");",
+              "  pm.expect(events.length).to.be.at.least(6);",
+              "  events.forEach((e) => {",
+              "    pm.expect(e).to.have.property(\"_id\");",
+              "    pm.expect(e).to.have.property(\"createdAt\");",
+              "  });",
+              "});",
+              "// 3. istek bu _id ile calisir (listedeki ilk etkinlik)",
+              "if (events.length > 0) pm.collectionVariables.set(\"eventId\", events[0]._id);"
             ]
           }
         }
@@ -79,12 +85,28 @@
       "name": "3 Tek etkinlik",
       "event": [
         {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// 2. istek henuz gonderilmediyse listeden bir _id al",
+              "if (!pm.collectionVariables.get(\"eventId\")) {",
+              "  pm.sendRequest(\"http://localhost:3000/events\", (err, res) => {",
+              "    if (!err) pm.collectionVariables.set(\"eventId\", res.json()[0]._id);",
+              "  });",
+              "}"
+            ]
+          }
+        },
+        {
           "listen": "test",
           "script": {
             "type": "text/javascript",
             "exec": [
               "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
-              "pm.test(\"id event-2\", () => pm.expect(pm.response.json().id).to.eql(\"event-2\"));"
+              "pm.test(\"listeden alinan _id ile ayni kayit\", () => {",
+              "  pm.expect(pm.response.json()._id).to.eql(pm.collectionVariables.get(\"eventId\"));",
+              "});"
             ]
           }
         }
@@ -93,7 +115,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/events/event-2",
+          "raw": "http://localhost:3000/events/{{eventId}}",
           "protocol": "http",
           "host": [
             "localhost"
@@ -101,7 +123,7 @@
           "port": "3000",
           "path": [
             "events",
-            "event-2"
+            "{{eventId}}"
           ]
         }
       },
@@ -148,9 +170,10 @@
             "type": "text/javascript",
             "exec": [
               "pm.test(\"201 Created\", () => pm.response.to.have.status(201));",
-              "pm.test(\"yeni kayit id ile doner\", () => {",
+              "pm.test(\"yeni kayit _id ve createdAt ile doner\", () => {",
               "  const body = pm.response.json();",
-              "  pm.expect(body.id).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(body._id).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(body).to.have.property(\"createdAt\");",
               "  pm.expect(body.title).to.eql(\"Kampüs Kodlama Gecesi\");",
               "});"
             ]
@@ -197,7 +220,11 @@
             "type": "text/javascript",
             "exec": [
               "pm.test(\"400 Bad Request\", () => pm.response.to.have.status(400));",
-              "pm.test(\"error.message\", () => pm.expect(pm.response.json().error.message).to.eql(\"title, category and date are required\"));"
+              "pm.test(\"error.message schema dogrulamasindan gelir\", () => {",
+              "  const message = pm.response.json().error.message;",
+              "  pm.expect(message).to.include(\"validation failed\");",
+              "  pm.expect(message).to.include(\"required\");",
+              "});"
             ]
           }
         }
@@ -232,6 +259,12 @@
         }
       },
       "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "eventId",
+      "value": ""
     }
   ]
 }
