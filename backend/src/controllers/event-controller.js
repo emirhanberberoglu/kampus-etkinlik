@@ -1,64 +1,54 @@
-import { events } from "../data/events.js";
+import mongoose from "mongoose";
+import { Event } from "../models/event-model.js";
 
 // Bütün hatalar aynı biçimde döner: { "error": { "message": "..." } }
 function sendError(res, status, message) {
   return res.status(status).json({ error: { message } });
 }
 
-// undefined, null ve yalnızca boşluktan oluşan değerler "boş" sayılır
-function isBlank(value) {
-  return value === undefined || value === null || String(value).trim() === "";
-}
-
-// Aynı milisaniyede iki kayıt gelirse id çakışmasın
-function createId() {
-  let id = `event-${Date.now()}`;
-  let counter = 1;
-  while (events.some((event) => event.id === id)) {
-    id = `event-${Date.now()}-${counter}`;
-    counter += 1;
-  }
-  return id;
-}
-
-// GET /events            → tüm etkinlikler
+// GET /events            → tüm etkinlikler (tarihe göre sıralı)
 // GET /events?category=X → yalnızca o kategori (isteğe bağlı)
-export function getEvents(req, res) {
-  const { category } = req.query;
-  const result = category
-    ? events.filter((event) => event.category === category)
-    : events;
-  res.json(result);
+// async/await: await unutulursa yanıt boş "{}" olur, bu yüzden Event.find() önünde await var.
+export async function getEvents(req, res, next) {
+  try {
+    const { category } = req.query;
+    const filter = category ? { category } : {};
+    const events = await Event.find(filter).sort({ date: 1 });
+    res.json(events);
+  } catch (err) {
+    next(err); // beklenmeyen hata app.js'teki hata yakalayıcıya gider, sunucu çökmez
+  }
 }
 
-// GET /events/:id → tek etkinlik, yoksa 404
-export function getEventById(req, res) {
-  const event = events.find((item) => item.id === req.params.id);
-  if (!event) {
-    return sendError(res, 404, "Event not found");
+// GET /events/:id → tek etkinlik; biçimi yanlış ya da kaydı olmayan id 404 döner
+export async function getEventById(req, res, next) {
+  try {
+    // "yok" gibi geçerli bir ObjectId olmayan değerde Mongoose CastError fırlatırdı (500).
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return sendError(res, 404, "Event not found");
+    }
+
+    const event = await Event.findById(req.params.id);
+    if (!event) {
+      return sendError(res, 404, "Event not found");
+    }
+    res.json(event);
+  } catch (err) {
+    next(err);
   }
-  res.json(event);
 }
 
-// POST /events → body'deki bilgilerle yeni etkinlik, başarılıysa 201
-export function createEvent(req, res) {
-  const { title, category, capacity, date, time, location, description } = req.body ?? {};
-
-  if (isBlank(title) || isBlank(category) || isBlank(date)) {
-    return sendError(res, 400, "title, category and date are required");
+// POST /events → doğrulamayı schema yapar, kurallara uymayan kayıt 400 döner
+export async function createEvent(req, res, next) {
+  try {
+    // Sadece bilinen alanlar alınır; istemci _id ya da createdAt gönderse de yok sayılır.
+    const { title, category, capacity, date, time, location, description } = req.body ?? {};
+    const event = await Event.create({ title, category, capacity, date, time, location, description });
+    res.status(201).json(event);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      return sendError(res, 400, err.message);
+    }
+    next(err);
   }
-
-  const newEvent = {
-    id: createId(),
-    title: String(title).trim(),
-    category: String(category).trim(),
-    capacity: Number(capacity) || 0,
-    date: String(date).trim(),
-    time: time ?? "",
-    location: location ?? "",
-    description: description ?? "",
-  };
-
-  events.push(newEvent);
-  res.status(201).json(newEvent);
 }
