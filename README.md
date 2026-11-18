@@ -13,7 +13,7 @@ Frontend'in en güncel çalışan hali: https://emirhanberberoglu-frontend.verce
 kampus-etkinlik/
   sprint1/ sprint2/ sprint3/   HTML, CSS ve JavaScript aşamaları
   frontend/                    React + TypeScript + Vite uygulaması (Sprint 4-6)
-  backend/                     Express REST API (Sprint 7)
+  backend/                     Express + MongoDB REST API (Sprint 7-8)
   README.md
 ```
 
@@ -23,6 +23,7 @@ kampus-etkinlik/
 * **JavaScript** (ES Modules, DOM)
 * **TypeScript, Vite ve React** (Sprint 4+), **React Router ve Context API** (Sprint 6)
 * **Node.js ve Express** (Sprint 7: REST API, dotenv, cors)
+* **MongoDB, MongoDB Atlas ve Mongoose** (Sprint 8: kalıcı veri, schema, model)
 * **Git & GitHub** (Versiyon Kontrolü)
 * **Vercel** (Canlı Yayın / Deployment)
 
@@ -41,11 +42,13 @@ npm run dev
 ```bash
 cd backend
 cp .env.example .env      # Windows PowerShell: copy .env.example .env
+# .env içindeki MONGODB_URI satırına kendi MongoDB adresini yaz (Atlas ya da yerel)
 npm install
+npm run seed              # 6 örnek etkinliği veritabanına ekler
 npm run dev
 ```
 
-Backend'in çalıştırma komutları, `PORT` değişkeni ve REST sözleşmesi tablosu için `backend/README.md` dosyasına bak.
+Backend'in çalıştırma komutları, `PORT` ve `MONGODB_URI` değişkenleri, veri modeli ve REST sözleşmesi tablosu için `backend/README.md` dosyasına bak. `.env` dosyası GitHub'a gönderilmez.
 
 ---
 
@@ -98,6 +101,19 @@ Backend'in çalıştırma komutları, `PORT` değişkeni ve REST sözleşmesi ta
 * Port koda yazılmadı, `.env` dosyasından (`dotenv`) okunur; `.env` ve `node_modules` GitHub'a gönderilmez, örnek değerler `.env.example` içindedir.
 * Tüm hatalar `{ "error": { "message": "..." } }` biçiminde döner (404 ve 400 durumları dahil).
 * `GET /health` yanıtında `student` alanı öğrenci numarasını (2416501013) taşır.
-* Etkinlikler bellekteki dizide tutulur, 6 başlangıç etkinliği vardır; `POST` ile eklenenler sunucu kapanınca silinir (kalıcı veri Sprint 8'de).
+* Etkinlikler bellekteki dizide tutuldu, 6 başlangıç etkinliği vardı; `POST` ile eklenenler sunucu kapanınca siliniyordu (kalıcı veri Sprint 8'de eklendi).
 * 6 isteklik Postman collection'ı `backend/requests/kampus-api.json` dosyasındadır.
 * Ayrıntılı çalıştırma komutları ve REST sözleşmesi tablosu: `backend/README.md`.
+
+### ✅ Sprint 8: MongoDB ve Mongoose (Tamamlandı)
+* Bu sprintte **yalnızca `backend/` klasörü değişti; `frontend/` değişmedi.** Adresler ve durum kodları Sprint 7 ile aynı kaldı, değişen şey verinin yeri: bellekteki dizi yerine MongoDB.
+* **Bağlantı ayrı modülde:** `config/database.js` içindeki `connectDatabase()` adresi `process.env.MONGODB_URI` değişkeninden okur. Sunucu önce veritabanına bağlanır, sonra `app.listen` çalışır. Bağlantı adresi (şifre içerir) hiçbir yerde yazdırılmaz.
+* **`.env` ve `.env.example`:** gerçek adres sadece kendi bilgisayarımdaki `.env` dosyasında durur; repoda yer tutucu değerli `.env.example` bulunur.
+* **Schema ve model:** `models/event-model.js` içindeki `Event` şemasında `required`, `trim`, `minlength/maxlength`, `enum` (kategori listesi), `min`/`default` kuralları ve `timestamps` (`createdAt`, `updatedAt`) vardır. Koleksiyon adı `events` olur.
+* **Seed:** `npm run seed` önce `deleteMany({})` ile koleksiyonu boşaltıp sonra `insertMany` ile 6 etkinlik ekler; kaç kez çalıştırılırsa çalıştırılsın veritabanında 6 kayıt kalır. Eski `data/events.js` dizisi `data/seed-events.js` dosyasına taşındı (`id` alanları kaldırıldı, `_id`'yi MongoDB verir).
+* **async/await ve hata yönetimi:** controller'lar `Event.find`, `Event.findById` ve `Event.create` çağrılarını `await` ile bekler; `try/catch` içinde `next(err)` kullanılır. `app.js` sonundaki hata yakalayıcı beklenmeyen hatalarda `500 Server error` döner, sunucu çökmez.
+* **`GET /events/:id`:** MongoDB `_id` ile çalışır. Olmayan id ve `yok` gibi geçersiz id `500` yerine `404 Event not found` döner (`mongoose.isValidObjectId`).
+* **`POST /events`:** doğrulamayı schema yapar; kurala uymayan kayıt `ValidationError` olarak yakalanıp `400` ile döner, geçerli kayıt `201` ve `_id`, `createdAt` ile döner.
+* **Kalıcılık:** sunucu durdurulup yeniden başlatılınca `POST` ile eklenen etkinlik veritabanında durur.
+* Postman collection'ı (`backend/requests/kampus-api.json`) yeni yapıya göre güncellendi: 3. istek listeden alınan `_id` ile çalışır.
+* Ayrıntılı çalıştırma komutları, veri modeli ve REST sözleşmesi: `backend/README.md`.
