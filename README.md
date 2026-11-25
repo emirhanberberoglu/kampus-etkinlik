@@ -13,7 +13,7 @@ Frontend'in en güncel çalışan hali: https://emirhanberberoglu-frontend.verce
 kampus-etkinlik/
   sprint1/ sprint2/ sprint3/   HTML, CSS ve JavaScript aşamaları
   frontend/                    React + TypeScript + Vite uygulaması (Sprint 4-6)
-  backend/                     Express + MongoDB REST API (Sprint 7-8)
+  backend/                     Express + MongoDB REST API (Sprint 7-9)
   README.md
 ```
 
@@ -23,7 +23,8 @@ kampus-etkinlik/
 * **JavaScript** (ES Modules, DOM)
 * **TypeScript, Vite ve React** (Sprint 4+), **React Router ve Context API** (Sprint 6)
 * **Node.js ve Express** (Sprint 7: REST API, dotenv, cors)
-* **MongoDB, MongoDB Atlas ve Mongoose** (Sprint 8: kalıcı veri, schema, model)
+* **MongoDB, MongoDB Atlas ve Mongoose** (Sprint 8: kalıcı veri, schema, model; Sprint 9: güncelleme, silme, sorgu işleçleri)
+* **Postman ve Newman** (Sprint 9: collection runner ile otomatik API testi)
 * **Git & GitHub** (Versiyon Kontrolü)
 * **Vercel** (Canlı Yayın / Deployment)
 
@@ -47,6 +48,8 @@ npm install
 npm run seed              # 6 örnek etkinliği veritabanına ekler
 npm run dev
 ```
+
+API'yi test etmek için (backend açıkken, repo kökünde): `newman run backend/requests/kampus-api.json` (önce `npm i -g newman`).
 
 Backend'in çalıştırma komutları, `PORT` ve `MONGODB_URI` değişkenleri, veri modeli ve REST sözleşmesi tablosu için `backend/README.md` dosyasına bak. `.env` dosyası GitHub'a gönderilmez.
 
@@ -117,3 +120,15 @@ Backend'in çalıştırma komutları, `PORT` ve `MONGODB_URI` değişkenleri, ve
 * **Kalıcılık:** sunucu durdurulup yeniden başlatılınca `POST` ile eklenen etkinlik veritabanında durur.
 * Postman collection'ı (`backend/requests/kampus-api.json`) yeni yapıya göre güncellendi: 3. istek listeden alınan `_id` ile çalışır.
 * Ayrıntılı çalıştırma komutları, veri modeli ve REST sözleşmesi: `backend/README.md`.
+
+### ✅ Sprint 9: Tam CRUD, Arama ve Yaklaşan Etkinlikler (Tamamlandı)
+* Bu sprintte **yalnızca `backend/` klasörü değişti; `frontend/` değişmedi.** REST sözleşmesine dört satır eklendi: `PATCH /events/:id`, `DELETE /events/:id`, `?search=` ve `?category=` ile arama/filtre, `GET /events/upcoming`.
+* **Tarih her yerde `"GG-AA-YYYY"`** (örnek `"15-10-2026"`). Veritabanında metin değil gerçek `Date` olarak durur; çünkü metin olarak `"05-11-2026"`, `"15-10-2026"`dan önce sıralanırdı. Çevirme işi `utils/date.js` içindeki `parseDate`, `formatDate` ve `todayStart` fonksiyonlarındadır; modelde `set: parseDate`, `get: formatDate` ve `toJSON: { getters: true }` kullanıldı. Yanlış biçim (`"2026-12-20"`) ya da gerçek olmayan tarih (`"31-02-2026"`) `400` döner.
+* **`PATCH /events/:id`:** yalnızca gönderilen alanlar değişir. `findByIdAndUpdate` içinde `returnDocument: "after"` (yanıtta güncel kayıt) ve `runValidators: true` (schema kuralları güncellemede de çalışır) kullanıldı. Boş gövde `400 Body is empty`, `_id`/`createdAt` gibi korunan alan `400 _id cannot be changed`, geçersiz değer `400`, olmayan ya da geçersiz id `404`.
+* **`DELETE /events/:id`:** başarılıysa `204` ve gövde yok (`res.status(204).end()`); aynı id'yi bir daha silmek `404 Event not found` döner.
+* **Arama ve filtre:** `GET /events?search=git&category=Atölye`. Arama başlıkta `$regex` ile yapılır, büyük/küçük harf fark etmez (`$options: "i"`); `( * ?` gibi işaretler regex'e girmeden önce kaçırılır, bu yüzden `?search=(` sunucu hatası vermez.
+* **`GET /events/upcoming`:** bugün ve sonrasındaki etkinlikleri `$gte` ile süzer, tarihe (sonra saate) göre artan sıralar. Route `/:id`'den **önce** tanımlıdır; yoksa `upcoming` bir id sanılır ve `404` döner.
+* **Seed:** 6 etkinlikten 2'sinin tarihi geçmiştir (`15-10-2026`, `05-11-2026`); böylece `/events` 6, `/events/upcoming` 4 kayıt verir.
+* **Hata yönetimi:** `ValidationError` ve `CastError` (yanlış tarih, sayı yerine metin) `400` olur; beklenmeyen hatalar `500 Server error`. Hata biçimi Sprint 8'deki gibi `{ "error": { "message": "..." } }` olarak kaldı ve geçersiz ya da olmayan id her yerde `404`.
+* **Postman:** `backend/requests/kampus-api.json` 18 istek ve 45 testtir. 2. istek listeden ilk `_id`'yi, 5. istek yeni oluşan kaydın `_id`'sini saklar; PATCH ve DELETE o yeni kayıtla çalıştığı için seed verisi bozulmaz ve collection istenildiği kadar tekrar çalıştırılabilir. Collection Runner sonucu `backend/requests/run-results.json` dosyasındadır; terminalde `newman run backend/requests/kampus-api.json` ile de çalışır.
+* Ayrıntılar, güncel REST sözleşmesi ve örnek istekler: `backend/README.md`.
